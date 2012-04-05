@@ -24,12 +24,13 @@ class AjaxApp(object):
         return open(os.path.join(MEDIA_DIR, u'index.html'))
         
     @cherrypy.expose
-    def upload(self, myfile):
+    def upload(self, myFile):
         f = open('temp.spe','wb')
-        f.write(myfile.file.read())
+        f.write(myFile.file.read())
         f.close()
         mf = maestrofile('temp.spe')
-        y = mf.counts
+        self.y = mf.counts
+        return open(os.path.join(MEDIA_DIR, u'index.html'))
 
     @cherrypy.expose
     def submit(self,name):
