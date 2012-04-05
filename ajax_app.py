@@ -11,6 +11,8 @@ import webbrowser
 import os
 import simplejson
 import sys
+sys.path.append('../libraries')
+from generic.maestrofile import maestrofile
 import numpy as np
 MEDIA_DIR = os.path.join(os.path.abspath("."), u"media")
 
@@ -20,12 +22,20 @@ class AjaxApp(object):
     @cherrypy.expose
     def index(self):
         return open(os.path.join(MEDIA_DIR, u'index.html'))
+        
+    @cherrypy.expose
+    def upload(self, myfile):
+        f = open('temp.spe','wb')
+        f.write(myfile.file.read())
+        f.close()
+        mf = maestrofile('temp.spe')
+        y = mf.counts
 
     @cherrypy.expose
     def submit(self,name):
         cherrypy.response.headers['Content-Type'] = 'application/json'
-        y = np.random.normal(50,25,300)
-        self.y = self.y + np.histogram(y,300)[0]
+        #y = np.random.normal(50,25,300)
+        #self.y = self.y + np.histogram(y,300)[0]
         return simplejson.dumps(dict(title=name,val = list(self.y)))
 
 config = {'/media':
