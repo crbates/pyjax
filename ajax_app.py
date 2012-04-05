@@ -48,6 +48,6 @@ config = {'/media':
 #def open_page():
 #    webbrowser.open("http://127.0.0.1:8080/")
 #cherrypy.engine.subscribe('start', open_page)
-cherrypy.tree.mount(AjaxApp(), '/', config=config)
-cherrypy.engine.start()
-#cherrypy.quickstart(AjaxApp())
+#cherrypy.tree.mount(AjaxApp(), '/', config=config)
+#cherrypy.engine.start()
+cherrypy.quickstart(AjaxApp(),config=config)
