@@ -12,16 +12,13 @@
     <h1>Flot Examples</h1>
 
     <div id="placeholder" style="width:600px;height:300px;"></div>
-
-    <p>You can update a chart periodically to get a real-time effect
-    by using a timer to insert the new data in the plot and redraw it.</p>
     <p> 
     <form action="upload" method="post" enctype="multipart/form-data">
-    filename: <input type="file" name="myFile" /><br />
+    filename: <input type="file" name="myFile" />
     <input type="submit" />
     </form>
     </p>
-    <p>Time between updates: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> milliseconds</p>
+    <!-- <p>Time between updates: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> milliseconds</p> -->
 
 <script type="text/javascript">
 $(function () {
@@ -31,6 +28,7 @@ $(function () {
     var y = 0;
     function sety(dat) {
         data= dat['val']//.push(dat['val']) ;
+        update();
         //y = dat['val']       
     }
     function getRandomData() {
@@ -58,7 +56,7 @@ $(function () {
                 data.push(y);
             }
         }
-        $.post('/submit',{name:y},sety);
+        
         // zip the generated y values with the x values
         var res = [];
         for (var i = 0; i < data.length; ++i)
@@ -67,6 +65,7 @@ $(function () {
     }
 
     // setup control widget
+    /*
     var updateInterval = 300;
     $("#updateInterval").val(updateInterval).change(function () {
         var v = $(this).val();
@@ -79,7 +78,7 @@ $(function () {
             $(this).val("" + updateInterval);
         }
     });
-
+    */
     // setup plot
     var options = {
         series: { shadowSize: 0 }, // drawing is faster without shadows
@@ -87,7 +86,8 @@ $(function () {
         xaxis: { show: false }
     };
     var plot = $.plot($("#placeholder"), [ getRandomData() ], options);
-
+    
+    
     function update() {
         //plot = $.plot($("#placeholder"), [ getRandomData() ], options);
         plot.setData([ getRandomData() ]);
@@ -95,10 +95,12 @@ $(function () {
         plot.setupGrid()
         plot.draw();
         
-        setTimeout(update, updateInterval);
+        //setTimeout(update, updateInterval);
     }
-
+    $.post('/submit',{name:y},sety);
+    
     update();
+    
 });
 </script>
 
