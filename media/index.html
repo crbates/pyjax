@@ -12,7 +12,10 @@
     <h1>Flot Examples</h1>
 
     <div id="placeholder" style="width:600px;height:300px;"></div>
-    <p> 
+
+    <p>livetime: <span id="livetime"></span></p> 
+    <p>
+    Upload an Ascii spe file:
     <form action="upload" method="post" enctype="multipart/form-data">
     filename: <input type="file" name="myFile" />
     <input type="submit" />
@@ -26,8 +29,10 @@ $(function () {
     // be fetched from a server
     var data = [], totalPoints = 300;
     var y = 0;
+   
     function sety(dat) {
         data= dat['val']//.push(dat['val']) ;
+        $("#livetime").text(dat['livetime']+"s")
         update();
         //y = dat['val']       
     }

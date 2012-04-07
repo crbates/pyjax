@@ -18,7 +18,7 @@ MEDIA_DIR = os.path.join(os.path.abspath("."), u"media")
 
 class AjaxApp(object):
     y = np.zeros(300)
-    
+    livetime = 0
     @cherrypy.expose
     def index(self):
         return open(os.path.join(MEDIA_DIR, u'index.html'))
@@ -30,6 +30,7 @@ class AjaxApp(object):
         f.close()
         mf = maestrofile('temp.spe')
         self.y = mf.counts
+        self.livetime = mf.livetime
         return open(os.path.join(MEDIA_DIR, u'index.html'))
 
     @cherrypy.expose
@@ -37,7 +38,7 @@ class AjaxApp(object):
         cherrypy.response.headers['Content-Type'] = 'application/json'
         #y = np.random.normal(50,25,300)
         #self.y = self.y + np.histogram(y,300)[0]
-        return simplejson.dumps(dict(title=name,val = list(self.y)))
+        return simplejson.dumps(dict(title=name,val = list(self.y),livetime=self.livetime))
 
 config = {'/media':
                 {'tools.staticdir.on': True,
