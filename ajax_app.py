@@ -19,6 +19,7 @@ MEDIA_DIR = os.path.join(os.path.abspath("."), u"media")
 class AjaxApp(object):
     y = np.zeros(300)
     livetime = 0
+    
     @cherrypy.expose
     def index(self):
         return open(os.path.join(MEDIA_DIR, u'index.html'))
@@ -31,7 +32,7 @@ class AjaxApp(object):
         mf = maestrofile('temp.spe')
         self.y = mf.counts
         self.livetime = mf.livetime
-        return open(os.path.join(MEDIA_DIR, u'index.html'))
+        return self.index()
 
     @cherrypy.expose
     def submit(self,name):
