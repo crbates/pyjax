@@ -23,6 +23,9 @@
     </form>
     </p>
     <p>You selected: <span id="selection"></span></p>
+    <p><input id="addcalpoint" type="button" value="Add a calibration point at selected peak"> </p>
+    <div id="calpoints"></div>
+    <div id="success"></div>
     <!-- <p>Time between updates: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> milliseconds</p> -->
 
 <script type="text/javascript">
@@ -31,6 +34,8 @@ $(function () {
     // be fetched from a server
     var data = [], totalPoints = 300;
     var y = 0;
+    var npoints = 0;
+    var ready = false;
    
     function sety(dat) {
         data= dat['val']//.push(dat['val']) ;
@@ -102,6 +107,23 @@ $(function () {
     };
     var plot = $.plot($("#placeholder"), [ getRandomData() ], options);
     
+    function addpoint(dat){
+        //$("#calpoints").text()
+    }
+    
+    $("#addcalpoint").click(function() {
+        $("#calpoints").html("element: <input id=\"element\" type=\"text\" value=\"\"> <br> mass <input id=\"mass\" type=\"text\" value=\"\">");
+        ready = true;
+        //$.post('/cal',{minv:ranges.xaxis.from.toFixed(1),maxv:ranges.xaxis.to.toFixed(1)})
+    
+    });
+    
+    function checkval() {
+        if(ready) {
+            $('#success').text("val is: " + $("#element").val());
+        }
+        setTimeout(checkval,100);
+    }
     
     function update() {
         //plot = $.plot($("#placeholder"), [ getRandomData() ], options);
@@ -113,7 +135,7 @@ $(function () {
         //setTimeout(update, updateInterval);
     }
     $.post('/submit',{name:y},sety);
-    
+    checkval();
     update();
     
 });

@@ -40,6 +40,10 @@ class AjaxApp(object):
         #y = np.random.normal(50,25,300)
         #self.y = self.y + np.histogram(y,300)[0]
         return simplejson.dumps(dict(title=name,val = list(self.y),livetime=self.livetime))
+        
+    @cherrypy.expose
+    def cal(self,):
+        pass
 
 config = {'/media':
                 {'tools.staticdir.on': True,
