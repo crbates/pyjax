@@ -39,8 +39,7 @@ $(function () {
     var ready = false;
    
     function getRandomData() {
-        if (data.length > 0){           
-        } else {
+        if (data.length == 0){           
             // do a random walk
             while (data.length < totalPoints) {
                 var prev = data.length > 0 ? data[data.length - 1] : 50;
@@ -88,7 +87,7 @@ $(function () {
     var options = {
         series: { shadowSize: 0 }, // drawing is faster without shadows
         yaxis: { min: 0,autoscaleMargin: 0.1 },
-        xaxis: { show: false },
+        xaxis: { show: true },
         selection: { mode: "x"}
     };
     var plot = $.plot($("#placeholder"), [ getRandomData() ], options);
@@ -100,8 +99,9 @@ $(function () {
         $("#livetime").text(dat['livetime']+"s")
         var res = [];
         for (var i = 0; i < data.length; ++i)
-            res.push([energy[i], data[i]])
-        plot.setData(res);
+            res.push([i, data[i]]);
+            
+        plot.setData([res]);
         plot.setupGrid()
         plot.draw();
     // Update the spectrum with the new calibration
@@ -110,7 +110,7 @@ $(function () {
     $("#addcalpoint").click(function() {
         $("#calpoints").html(" element: <input id=\"element\" type=\"text\" value=\"\">\
         <br> mass <input id=\"mass\" type=\"text\" value=\"\">\
-        <br> energy <input id=\"energy\" type=\"text\" value=\"\">
+        <br> energy <input id=\"energy\" type=\"text\" value=\"\">\
         <br> <label><input id=\"save\" type=\"checkbox\" / >Save point.</label>  ");
         ready = true;
         $.post('/cal',{minv:ranges.xaxis.from.toFixed(1),maxv:ranges.xaxis.to.toFixed(1),energy:$("#energy").txt},updatecal)

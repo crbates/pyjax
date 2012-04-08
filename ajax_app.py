@@ -18,7 +18,9 @@ MEDIA_DIR = os.path.join(os.path.abspath("."), u"media")
 
 class AjaxApp(object):
     y = np.zeros(300)
+    en = range(300)
     livetime = 0
+    calibrated = False
     
     @cherrypy.expose
     def index(self):
@@ -31,15 +33,23 @@ class AjaxApp(object):
         f.close()
         mf = maestrofile('temp.spe')
         self.y = mf.counts
+        if type(mf.slope) == float and mf.slope > 0:
+            self.en = mf.energy
+        else:
+            self.en = range(len(mf.energy))
         self.livetime = mf.livetime
         return self.index()
+        
+    def cal(self,minv,maxv,energy):
+        
+        return simplejson.dumps(dict(val = list(self.y),livetime=self.livetime,en=list(self.en)))
 
     @cherrypy.expose
     def submit(self,name):
         cherrypy.response.headers['Content-Type'] = 'application/json'
         #y = np.random.normal(50,25,300)
         #self.y = self.y + np.histogram(y,300)[0]
-        return simplejson.dumps(dict(title=name,val = list(self.y),livetime=self.livetime))
+        return simplejson.dumps(dict(title=name,val = list(self.y),livetime=self.livetime,en=list(self.en)))
         
     @cherrypy.expose
     def cal(self,):
