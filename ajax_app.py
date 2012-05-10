@@ -39,9 +39,12 @@ class AjaxApp(object):
             self.en = range(len(mf.energy))
         self.livetime = mf.livetime
         return self.index()
-        
+    
+    @cherrypy.expose
     def cal(self,minv,maxv,energy):
-        
+        center = (minv+maxv)/2
+        slope = energy/center
+        self.en = np.arange(len(self.y))*slope
         return simplejson.dumps(dict(val = list(self.y),livetime=self.livetime,en=list(self.en)))
 
     @cherrypy.expose

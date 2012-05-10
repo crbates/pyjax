@@ -2,15 +2,16 @@
 <html>
  <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Flot Examples</title>
+    <title>Spectrum Viewer 0.1</title>
     <link href="/media/layout.css" rel="stylesheet" type="text/css">
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
     <script language="javascript" type="text/javascript" src="/media/flot/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="/media/flot/jquery.flot.js"></script>
     <script language="javascript" type="text/javascript" src="/media/flot/jquery.flot.selection.js"></script>
+    <script language="javascript" type="text/javascript" src="/media/flot/jquery.flot.navigate.js"></script>
  </head>
     <body>
-    <h1>Flot Examples</h1>
+    <h1>Spectrum Viewer 0.1</h1>
 
     <div id="placeholder" style="width:600px;height:300px;"></div>
 
@@ -88,7 +89,10 @@ $(function () {
         series: { shadowSize: 0 }, // drawing is faster without shadows
         yaxis: { min: 0,autoscaleMargin: 0.1 },
         xaxis: { show: true },
-        selection: { mode: "x"}
+        selection: { mode: "x"},
+        zoom: {
+            interactive: true
+        },
     };
     var plot = $.plot($("#placeholder"), [ getRandomData() ], options);
     
@@ -108,12 +112,17 @@ $(function () {
     }
     
     $("#addcalpoint").click(function() {
-        $("#calpoints").html(" element: <input id=\"element\" type=\"text\" value=\"\">\
-        <br> mass <input id=\"mass\" type=\"text\" value=\"\">\
-        <br> energy <input id=\"energy\" type=\"text\" value=\"\">\
-        <br> <label><input id=\"save\" type=\"checkbox\" / >Save point.</label>  ");
-        ready = true;
-        $.post('/cal',{minv:ranges.xaxis.from.toFixed(1),maxv:ranges.xaxis.to.toFixed(1),energy:$("#energy").txt},updatecal)
+        if(ready) {
+            $.post('/cal',{minv:ranges.xaxis.from.toFixed(1),maxv:ranges.xaxis.to.toFixed(1),energy:$("#energy").txt},updatecal);
+            $("#calpoints").html("blah");
+            ready =  false;
+        } else {
+            $("#calpoints").html(" element: <input id=\"element\" type=\"text\" value=\"\">\
+            <br> mass <input id=\"mass\" type=\"text\" value=\"\">\
+            <br> energy <input id=\"energy\" type=\"text\" value=\"\">\
+            <br> <label><input id=\"save\" type=\"checkbox\" / >Save point.</label>  ");
+            ready = true;
+        }
     
     });
     
@@ -122,7 +131,7 @@ $(function () {
             $('#success').text("val is: " + $("#element").val());
             var save = $('#save').attr("checked");
             if (save) {
-                $.post()
+               // $.post()
             }
             
         }
