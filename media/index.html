@@ -2,19 +2,18 @@
 <html>
  <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Flot Examples</title>
+    <title>Live histogram</title>
     <link href="/media/layout.css" rel="stylesheet" type="text/css">
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
     <script language="javascript" type="text/javascript" src="/media/flot/jquery.js"></script>
     <script language="javascript" type="text/javascript" src="/media/flot/jquery.flot.js"></script>
  </head>
     <body>
-    <h1>Flot Examples</h1>
+    <h1>Simple Live histogram example</h1>
 
     <div id="placeholder" style="width:600px;height:300px;"></div>
 
-    <p>You can update a chart periodically to get a real-time effect
-    by using a timer to insert the new data in the plot and redraw it.</p>
+    <p>This histogram is updated at the interval specified below by calling a python function which returns json formatted data which is then plotted using flot.</p>
 
     <p>Time between updates: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> milliseconds</p>
 
